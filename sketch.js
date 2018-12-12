@@ -16,12 +16,17 @@ let window_text;
 let ceiling_text;
 let floor_text;
 
+let bed;
+let chair;
+
 function preload(){
 	text = loadImage("wood.jpeg")
 	window_text = loadImage('windows.jpg')
 	ceiling_text = loadImage('ceiling_texture.jpg')
 	floor_text = loadImage('carpet_texture.jpg')
 
+	chair = loadModel('models/chair.obj');
+	bed = loadModel('models/bed.obj');
 }
 
 function setup() {
@@ -63,6 +68,21 @@ function draw() {
 		translate(room_width/2,0,0);
 		texture(window_text);
 		box(2,200,200)
+	pop();
+
+	push();
+		translate(room_width/2 - 200, room_height/2, 0)
+		scale(10);
+		rotateY(PI/2);
+		rotateZ(PI)
+		model(chair);
+	pop();
+
+	push();
+		translate(-room_width/2 + 300, room_height/2, room_length/2 -500)
+		scale(100);
+		rotateZ(PI);
+		model(bed);
 	pop();
 
 
