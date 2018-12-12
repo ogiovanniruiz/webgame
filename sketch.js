@@ -1,29 +1,27 @@
-let angle = 0;
-
 let room_height = 500;
-
-let room_length = 2000;
-
+let room_length = 4000;
 let room_width = 2000;
 
 let x = 0;
 let y = 0;
 let z = 0;
 
-let speed = 100;
+let angle = 0;
 
+let speed = 100;
 let turn_speed = 10;
 
 let text;
-
 let window_text;
+let ceiling_text;
+let floor_text;
 
 function preload(){
 	text = loadImage("wood.jpeg")
-
 	window_text = loadImage('windows.jpg')
-
 	ceiling_text = loadImage('ceiling_texture.jpg')
+	floor_text = loadImage('carpet_texture.jpg')
+
 }
 
 function setup() {
@@ -33,66 +31,41 @@ function setup() {
 function draw() {
 
 	background(0);
-	
-	camera(x, y, z , x*cos(angle*PI/180) + z*sin(angle*PI/180), y, z*sin(angle*PI/180), 0, 1,0);
+
+	camera(x, y, z, x, y, 0, 0, 1,0);
 
 	if (keyIsDown(81)){angle -= turn_speed;}
 	if (keyIsDown(69)){angle += turn_speed;}
 
-	//Back Wall
+	//console.log(angle);
+
 	push();
-		translate(0,0,-room_length/2);
 		texture(text);
-		box(room_width, room_height, 1);
+		box(room_width, room_height, room_length);
+	pop();
+
+	//Ceiling
+	push();
+		translate(0,-room_height/2,0);
+		texture(ceiling_text);
+		box(room_width, 3, room_length);
 	pop();
 
 	//Floor
 	push();
 		translate(0,room_height/2,0);
-		rotateX(PI/2);
-		texture(text);
-		box(room_width, room_height*4, 1);
-	pop();
-
-	//Celing
-	push();
-		translate(0,-room_height/2,0);
-		rotateX(PI/2);
-		texture(ceiling_text);
-		box(room_width, room_height*4, 1);
-	pop();
-
-	//Right Wall
-	push()
-		translate(room_width/2, 0, 0)
-		rotateY(PI/2);
-		rotateZ((PI/2))
-		texture(window_text);
-		box(300, 300, 3);
-	pop()
-
-	//Left Wall
-	push();
-		translate(room_width/2,0,0);
-		rotateY(PI/2);
-		texture(text);
-		box(room_length, room_height, 1);
-	pop();
-
-	//Front Wall
-	push();
-		translate(-room_width/2,0,0);
-		rotateY(PI/2);
-		texture(text);
-		box(room_length, room_height, 1);
+		texture(floor_text);
+		box(room_width, 3, room_length);
 	pop();
 
 	//Window
 	push();
-		translate(0,0,room_length/2);
-		texture(text);
-		box(room_width, room_height, 1);
+		translate(room_width/2,0,0);
+		texture(window_text);
+		box(2,200,200)
 	pop();
+
+
 
 	if (keyIsDown(83)){
 		if(z >= room_length/2){
@@ -101,6 +74,7 @@ function draw() {
 			z += speed;
 		}
 	}
+
 	if (keyIsDown(87)){
 		if(z < -room_length/2){
 			console.log("CLipping")
@@ -108,6 +82,7 @@ function draw() {
 			z -= speed;
 		}
 	}
+
 	if (keyIsDown(68)){
 		if(x >= room_width/2){
 			console.log("CLipping")
@@ -115,6 +90,7 @@ function draw() {
 			x += speed;
 		}
 	}
+
 	if (keyIsDown(65)){
 		if(x <= -room_width/2){
 			console.log("CLipping")
