@@ -1,126 +1,129 @@
 let angle = 0;
 
-let x = 1500;
+let room_height = 500;
+
+let room_length = 2000;
+
+let room_width = 2000;
+
+let x = 0;
 let y = 0;
-let z = -3500;
+let z = 0;
 
-speed = 100;
+let speed = 100;
 
-theta = 0;
-let walls;
-let cube;
+let turn_speed = 10;
 
-let diego;
+let text;
 
-let flakes;
+let window_text;
 
 function preload(){
+	text = loadImage("wood.jpeg")
 
-	walls = loadModel('models/room2.obj');
-	cube = loadModel('models/untitled.obj');
+	window_text = loadImage('windows.jpg')
 
-	diego = loadImage("jimmy.jpg");
-
-	flakes = loadImage("diego.jpg");
+	ceiling_text = loadImage('ceiling_texture.jpg')
 }
 
 function setup() {
-  	createCanvas(windowWidth, windowHeight, WEBGL);
+ 	createCanvas(windowWidth, windowHeight, WEBGL);
 }
 
 function draw() {
 
-	background(255);
+	background(0);
 	
-	//camera(x, 200, z, x + angle, 200, angle + 3500 + z, 0, -1,0);
+	camera(x, y, z , x*cos(angle*PI/180) + z*sin(angle*PI/180), y, z*sin(angle*PI/180), 0, 1,0);
 
-	camera(x, 200, z, x*cos(angle*PI/180), 200, z*sin(angle*PI/180), 0, -1,0);
+	if (keyIsDown(81)){angle -= turn_speed;}
+	if (keyIsDown(69)){angle += turn_speed;}
 
-	//console.log( cos(angle*PI/180))
-
-	//console.log(angle)
-
-	if (keyIsDown(69)){
-		if (angle >= -180){
-			angle -= 1;
-		} else{
-
-			angle = 180
-		}
-	}
-	if (keyIsDown(81)){
-
-		if (angle <= 180){
-			angle += 1;
-		} else{
-			angle = -180
-		}
-
-	}
-
+	//Back Wall
 	push();
-		translate(0,0,-3000);
-		//scale(500)
-		texture(flakes);
-
-		model(walls);
+		translate(0,0,-room_length/2);
+		texture(text);
+		box(room_width, room_height, 1);
 	pop();
 
+	//Floor
 	push();
-		translate(1000,200,-1500);
-		rotateZ(theta * 0.1);
-    	rotateX(theta * 0.1);
-    	rotateY(theta * 0.1);
-		texture(flakes);
-		box(500, 500, 500);
+		translate(0,room_height/2,0);
+		rotateX(PI/2);
+		texture(text);
+		box(room_width, room_height*4, 1);
 	pop();
 
-	if (keyIsDown(87)){
-		if(z >= -200){
+	//Celing
+	push();
+		translate(0,-room_height/2,0);
+		rotateX(PI/2);
+		texture(ceiling_text);
+		box(room_width, room_height*4, 1);
+	pop();
+
+	//Right Wall
+	push()
+		translate(room_width/2, 0, 0)
+		rotateY(PI/2);
+		rotateZ((PI/2))
+		texture(window_text);
+		box(300, 300, 3);
+	pop()
+
+	//Left Wall
+	push();
+		translate(room_width/2,0,0);
+		rotateY(PI/2);
+		texture(text);
+		box(room_length, room_height, 1);
+	pop();
+
+	//Front Wall
+	push();
+		translate(-room_width/2,0,0);
+		rotateY(PI/2);
+		texture(text);
+		box(room_length, room_height, 1);
+	pop();
+
+	//Window
+	push();
+		translate(0,0,room_length/2);
+		texture(text);
+		box(room_width, room_height, 1);
+	pop();
+
+	if (keyIsDown(83)){
+		if(z >= room_length/2){
 			console.log("CLipping")
 		}else{
 			z += speed;
 		}
 	}
-	if (keyIsDown(83)){
-		if(z <= -3500){
+	if (keyIsDown(87)){
+		if(z < -room_length/2){
 			console.log("CLipping")
 		}else{
 			z -= speed;
 		}
 	}
 	if (keyIsDown(68)){
-		if(x >= 2000){
+		if(x >= room_width/2){
 			console.log("CLipping")
 		}else{
 			x += speed;
 		}
 	}
 	if (keyIsDown(65)){
-		if(x <= 0){
+		if(x <= -room_width/2){
 			console.log("CLipping")
 		}else{
 			x -= speed;
 		}
 	}
 
-	theta += 1;
 
 	//console.log("x: " + x);
 	//console.log("z: " + z);
 }
-
-/*
-function keyPressed(){
-
-	if(key === 'a'){x -= 10;}
-
-	if (key === 's'){z -= 10;}
-
-	if (key === 'd'){x += 10;}
-
-	if (key === 'w'){z += 10;}
-
-}
-
-*/
