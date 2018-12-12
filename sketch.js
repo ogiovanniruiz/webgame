@@ -2,22 +2,28 @@ let room_height = 500;
 let room_length = 4000;
 let room_width = 2000;
 
-let x = 0;
-let y = 0;
-let z = 0;
+let velocity;
 
-let angle = 0;
+let position;
 
 let speed = 100;
-let turn_speed = 10;
 
+//Texture Declarations
 let text;
 let window_text;
 let ceiling_text;
 let floor_text;
 
+//Model Declarations
 let bed;
 let chair;
+
+let pan = 0;
+
+let sensitivity = 0.1;
+let friction = 0.1;
+
+let clip_error = 150;
 
 function preload(){
 	text = loadImage("wood.jpeg")
@@ -31,18 +37,64 @@ function preload(){
 
 function setup() {
  	createCanvas(windowWidth, windowHeight, WEBGL);
+
+ 	velocity = createVector(0,0,0);
+	position = createVector(0,0,0);
 }
 
 function draw() {
 
 	background(0);
 
-	camera(x, y, z, x, y, 0, 0, 1,0);
+	if(mouseIsPressed){
+		pan += map(mouseX-width/2, -width/2, width/2, -PI, PI)*sensitivity;
+	}
 
-	if (keyIsDown(81)){angle -= turn_speed;}
-	if (keyIsDown(69)){angle += turn_speed;}
 
-	//console.log(angle);
+	var forward = createVector(cos (pan),0, sin(pan))
+
+	var right = createVector(cos(pan - PI/2), 0, sin(pan - PI/2));
+
+	if (keyIsDown(87)){
+		velocity.add(p5.Vector.mult(forward,speed));
+	}
+
+	if (keyIsDown(83)){
+		velocity.sub(p5.Vector.mult(forward,speed));
+	}
+
+
+	/*
+
+	if (keyIsDown(87) && (z <= room_length/2 - clip_error)){
+		velocity.add(p5.Vector.mult(forward,speed));
+	}
+
+	if (keyIsDown(83) && (z >= -room_length/2 + clip_error)){
+		velocity.sub(p5.Vector.mult(forward,speed));
+	}
+
+	if (keyIsDown(68) && (x <= (room_width/2 - clip_error))){
+		x += speed;
+	}
+	if (keyIsDown(65)  && (x >= (-room_width/2 + clip_error))){
+		x -= speed;
+	}
+	*/
+
+	velocity.mult(friction)
+	position.add(velocity);
+
+	var center = p5.Vector.add(position, forward);
+
+	camera(position.x, position.y, position.z, center.x, center.y, center.z, 0, 1,0);
+
+	build_room();
+
+}
+
+
+function build_room(){
 
 	push();
 		texture(text);
@@ -85,41 +137,4 @@ function draw() {
 		model(bed);
 	pop();
 
-
-
-	if (keyIsDown(83)){
-		if(z >= room_length/2){
-			console.log("CLipping")
-		}else{
-			z += speed;
-		}
-	}
-
-	if (keyIsDown(87)){
-		if(z < -room_length/2){
-			console.log("CLipping")
-		}else{
-			z -= speed;
-		}
-	}
-
-	if (keyIsDown(68)){
-		if(x >= room_width/2){
-			console.log("CLipping")
-		}else{
-			x += speed;
-		}
-	}
-
-	if (keyIsDown(65)){
-		if(x <= -room_width/2){
-			console.log("CLipping")
-		}else{
-			x -= speed;
-		}
-	}
-
-
-	//console.log("x: " + x);
-	//console.log("z: " + z);
 }
