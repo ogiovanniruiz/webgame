@@ -1,17 +1,14 @@
 let angle = 0;
 
-
 let x = 1500;
 let y = 0;
 let z = -3500;
-
 
 speed = 100;
 
 theta = 0;
 let walls;
 let cube;
-
 
 let diego;
 
@@ -33,14 +30,33 @@ function setup() {
 
 function draw() {
 
-	background(0);
+	background(255);
 	
-	offset = (height/2)/tan(PI/6);
+	//camera(x, 200, z, x + angle, 200, angle + 3500 + z, 0, -1,0);
 
-	camera(x, 200, z, x + angle, 200, angle, 0, -1,0);
+	camera(x, 200, z, x*cos(angle*PI/180), 200, z*sin(angle*PI/180), 0, -1,0);
 
-	if (keyIsDown(81)){angle -= speed;}
-	if (keyIsDown(69)){angle += speed;}
+	//console.log( cos(angle*PI/180))
+
+	//console.log(angle)
+
+	if (keyIsDown(69)){
+		if (angle >= -180){
+			angle -= 1;
+		} else{
+
+			angle = 180
+		}
+	}
+	if (keyIsDown(81)){
+
+		if (angle <= 180){
+			angle += 1;
+		} else{
+			angle = -180
+		}
+
+	}
 
 	push();
 		translate(0,0,-3000);
@@ -55,7 +71,7 @@ function draw() {
 		rotateZ(theta * 0.1);
     	rotateX(theta * 0.1);
     	rotateY(theta * 0.1);
-		texture(diego);
+		texture(flakes);
 		box(500, 500, 500);
 	pop();
 
@@ -88,7 +104,7 @@ function draw() {
 		}
 	}
 
-	theta += 5;
+	theta += 1;
 
 	//console.log("x: " + x);
 	//console.log("z: " + z);
