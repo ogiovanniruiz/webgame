@@ -17,6 +17,8 @@ let bed;
 let chair;
 let desk;
 let laptop;
+let closet;
+let door;
 
 let pan = 0;
 
@@ -26,6 +28,11 @@ let friction = 0.1;
 let clip_error = 150;
 
 let objs = [];
+
+let obj_posX;
+let obj_posZ;
+
+let rot_edit = 0;
 
 function preload(){
 
@@ -39,6 +46,8 @@ function preload(){
 
 	desk = loadModel('models/desk.obj');
 	laptop = loadModel('models/laptop.obj');
+	closet = loadModel('models/closet.obj');
+	door = loadModel("models/door.obj");
 
 }
 
@@ -70,6 +79,21 @@ function draw() {
 
 	if (keyIsDown(83)){
 		velocity.sub(p5.Vector.mult(forward,speed));
+
+	}
+
+	if (keyIsDown(81)){
+
+		rot_edit += PI/4;
+
+
+	}
+
+	if (keyIsDown(69)){
+
+		rot_edit -= PI/4;
+
+
 	}
 
 	velocity.mult(friction);
@@ -98,6 +122,9 @@ function draw() {
 
 	build_room();
 
+	console.log("X: " + obj_posX);
+	console.log("Z: " + obj_posZ);
+	//console.log("Edit Angle: " + rot_edit)
 
 
 }
@@ -139,9 +166,9 @@ function build_room(){
 
 	//chair
 	push();
-		translate(room_width/2 - 200, room_height/2, 0)
-		scale(10);
-		rotateY(PI/2);
+		translate(-526, room_height/2, -1278)
+		scale(15);
+		rotateY(PI);
 		rotateZ(PI)
 		model(chair);
 	pop();
@@ -161,11 +188,34 @@ function build_room(){
 		rotateY(PI/2);
 		rotateZ(PI);
 		model(desk);
+	pop();
 
 	//laptop
 	push();
-		translate(0,200,0);
+		translate(-500,52,-1350);
 		rotateX(PI);
+		rotateY(PI);
 		model(laptop);
+	pop();
+
+	//closet
+	push();
+		translate(460,250,-865);
+		scale(200);
+		rotateY(PI);
+		rotateZ(PI);
+		model(closet);
+	pop();
+
+	//door
+
+	obj_posX = map(mouseX, 0, width, -room_length, room_length)
+	obj_posZ = map(mouseY, 0, height, -room_length, room_length)
+	push();
+		translate(475,243,-1288);
+		rotateZ(PI);
+		scale(200);
+		model(door);
+	pop();
 
 }
