@@ -26,10 +26,10 @@ let friction = 0.1;
 let clip_error = 150;
 
 function preload(){
-	text = loadImage("wood.jpeg")
-	window_text = loadImage('windows.jpg')
-	ceiling_text = loadImage('ceiling_texture.jpg')
-	floor_text = loadImage('carpet_texture.jpg')
+	text = loadImage("textures/wood.jpeg")
+	window_text = loadImage('textures/windows.jpg')
+	ceiling_text = loadImage('textures/ceiling_texture.jpg')
+	floor_text = loadImage('textures/carpet_texture.jpg')
 
 	chair = loadModel('models/chair.obj');
 	bed = loadModel('models/bed.obj');
