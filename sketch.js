@@ -20,7 +20,7 @@ let chair;
 
 let pan = 0;
 
-let sensitivity = 0.1;
+let sensitivity = 0.01;
 let friction = 0.1;
 
 let clip_error = 150;
