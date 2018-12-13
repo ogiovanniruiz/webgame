@@ -3,10 +3,8 @@ let room_length = 4000;
 let room_width = 2000;
 
 let velocity;
-
 let position;
-
-let speed = 100;
+let speed = 200;
 
 //Texture Declarations
 let text;
@@ -25,7 +23,10 @@ let friction = 0.1;
 
 let clip_error = 150;
 
+let objs = [];
+
 function preload(){
+
 	text = loadImage("textures/wood.jpeg")
 	window_text = loadImage('textures/windows.jpg')
 	ceiling_text = loadImage('textures/ceiling_texture.jpg')
@@ -33,6 +34,7 @@ function preload(){
 
 	chair = loadModel('models/chair.obj');
 	bed = loadModel('models/bed.obj');
+
 }
 
 function setup() {
@@ -40,6 +42,9 @@ function setup() {
 
  	velocity = createVector(0,0,0);
 	position = createVector(0,0,0);
+
+	objs[0] = new Obj(-700, 250, 1500, "chair");
+
 }
 
 function draw() {
@@ -50,8 +55,7 @@ function draw() {
 		pan += map(mouseX-width/2, -width/2, width/2, -PI, PI)*sensitivity;
 	}
 
-
-	var forward = createVector(cos (pan),0, sin(pan))
+	var forward = createVector(cos(pan), 0, sin(pan));
 
 	var right = createVector(cos(pan - PI/2), 0, sin(pan - PI/2));
 
@@ -63,27 +67,25 @@ function draw() {
 		velocity.sub(p5.Vector.mult(forward,speed));
 	}
 
-
-	/*
-
-	if (keyIsDown(87) && (z <= room_length/2 - clip_error)){
-		velocity.add(p5.Vector.mult(forward,speed));
-	}
-
-	if (keyIsDown(83) && (z >= -room_length/2 + clip_error)){
-		velocity.sub(p5.Vector.mult(forward,speed));
-	}
-
-	if (keyIsDown(68) && (x <= (room_width/2 - clip_error))){
-		x += speed;
-	}
-	if (keyIsDown(65)  && (x >= (-room_width/2 + clip_error))){
-		x -= speed;
-	}
-	*/
-
-	velocity.mult(friction)
+	velocity.mult(friction);
 	position.add(velocity);
+
+	if((abs((objs[0].x - position.x)) < 500) && (abs((objs[0].z - position.z)) < 500)){
+
+		if (confirm('Would you like to sleep?')) {
+    		console.log("HERE");
+
+    		position.x = 0;
+    		position.z = 0;
+		}else{
+
+			position.x = 0;
+    		position.z = 0;
+
+
+		} 
+
+	}
 
 	var center = p5.Vector.add(position, forward);
 
@@ -91,6 +93,14 @@ function draw() {
 
 	build_room();
 
+
+
+}
+
+function mousePressed(){
+
+
+	console.log("THIS PRESSED")
 }
 
 
