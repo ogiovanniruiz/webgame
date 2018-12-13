@@ -1,5 +1,5 @@
 let room_height = 500;
-let room_length = 4000;
+let room_length = 3000;
 let room_width = 2000;
 
 let velocity;
@@ -15,6 +15,8 @@ let floor_text;
 //Model Declarations
 let bed;
 let chair;
+let desk;
+let laptop;
 
 let pan = 0;
 
@@ -34,6 +36,9 @@ function preload(){
 
 	chair = loadModel('models/chair.obj');
 	bed = loadModel('models/bed.obj');
+
+	desk = loadModel('models/desk.obj');
+	laptop = loadModel('models/laptop.obj');
 
 }
 
@@ -132,6 +137,7 @@ function build_room(){
 		box(2,200,200)
 	pop();
 
+	//chair
 	push();
 		translate(room_width/2 - 200, room_height/2, 0)
 		scale(10);
@@ -140,11 +146,26 @@ function build_room(){
 		model(chair);
 	pop();
 
+	//bed
 	push();
 		translate(-room_width/2 + 300, room_height/2, room_length/2 -500)
 		scale(100);
 		rotateZ(PI);
 		model(bed);
 	pop();
+
+	//desk
+	push();
+		translate(-room_width/4,room_height/2,room_length - 3900);
+		scale(225);
+		rotateY(PI/2);
+		rotateZ(PI);
+		model(desk);
+
+	//laptop
+	push();
+		translate(0,200,0);
+		rotateX(PI);
+		model(laptop);
 
 }
