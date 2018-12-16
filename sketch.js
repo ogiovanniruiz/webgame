@@ -57,7 +57,11 @@ function setup() {
  	velocity = createVector(0,0,0);
 	position = createVector(0,0,0);
 
-	objs[0] = new Obj(-700, 250, 1500, "chair");
+	objs[0] = new Obj(-700, 250, 1500, "bed", 700,700,"Would you like to sleep?");
+	objs[1] = new Obj(-500,52,-1350, "laptop", 200,200,"Would you like to check you computer?");
+	objs[2] = new Obj(room_width/2,0,0, "windoow",200,200,"Would you like to look outside?");
+	objs[3] = new Obj(475,243,-1288, "door",500,500,"Would you like to leave?");
+
 
 }
 
@@ -99,21 +103,19 @@ function draw() {
 	velocity.mult(friction);
 	position.add(velocity);
 
-	if((abs((objs[0].x - position.x)) < 500) && (abs((objs[0].z - position.z)) < 500)){
+	for(var i = 0; i < objs.length; i++){
 
-		if (confirm('Would you like to sleep?')) {
-    		console.log("HERE");
+		if((abs((objs[i].x - position.x)) < objs[i].w) && (abs((objs[i].z - position.z)) < objs[i].l)){
 
-    		position.x = 0;
-    		position.z = 0;
-		}else{
+			if (confirm(objs[i].msg)) {
+    			position.x = 0;
+    			position.z = 0;
+			}else{
 
-			position.x = 0;
-    		position.z = 0;
-
-
-		} 
-
+				position.x = 0;
+    			position.z = 0;
+			} 
+		}
 	}
 
 	var center = p5.Vector.add(position, forward);
@@ -164,16 +166,16 @@ function build_room(){
 		box(2,200,200)
 	pop();
 
-	//chair
+	//Chair
 	push();
 		translate(-526, room_height/2, -1278)
-		scale(15);
-		rotateY(PI);
+		scale(2.5);
+		rotateY(PI/8);
 		rotateZ(PI)
 		model(chair);
 	pop();
 
-	//bed
+	//Bed
 	push();
 		translate(-room_width/2 + 300, room_height/2, room_length/2 -500)
 		scale(100);
@@ -181,7 +183,7 @@ function build_room(){
 		model(bed);
 	pop();
 
-	//desk
+	//Desk
 	push();
 		translate(-room_width/4,room_height/2,room_length - 3900);
 		scale(225);
@@ -190,7 +192,7 @@ function build_room(){
 		model(desk);
 	pop();
 
-	//laptop
+	//Laptop
 	push();
 		translate(-500,52,-1350);
 		rotateX(PI);
@@ -198,7 +200,7 @@ function build_room(){
 		model(laptop);
 	pop();
 
-	//closet
+	//Closet
 	push();
 		translate(460,250,-865);
 		scale(200);
@@ -207,7 +209,7 @@ function build_room(){
 		model(closet);
 	pop();
 
-	//door
+	//Door
 
 	obj_posX = map(mouseX, 0, width, -room_length, room_length)
 	obj_posZ = map(mouseY, 0, height, -room_length, room_length)
